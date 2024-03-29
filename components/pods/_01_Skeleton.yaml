@@ -1,0 +1,11 @@
+apiVersion: v1            # apiVersion : API Version needs to be mentioned here, for pod we can use v1
+kind: Pods                # kind: Need to mention whats the kind either ( POD, Services, ReplicaSets or Deployment )
+metadata:                 # metadata: data about the pod
+  name: myapp-nginx-pod             # name: name of the pod
+  lables:                     # lables: will be used in future to verify which pods we are referening to      
+    app: nginx      
+    tier: frontend 
+spec:                     # spec: Specification about the pod
+  containers:
+    - name: nginx
+      image: nginx
