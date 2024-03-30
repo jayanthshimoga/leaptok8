@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: my-replicaset-postgres
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: db-tier
+  template:
+    metadata:
+      name: postgres
+      labels:
+        tier: db-tier
+    spec:
+      containers:
+        - name: postgres
+          image: postgres
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          env:
+            - name: POSTGRES_USERNAME
+              value: admin
+            - name: POSTGRES_PASSWORD
+              value: mysecretpassword

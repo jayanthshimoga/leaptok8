@@ -1,0 +1,38 @@
+#  The Deployment yaml is exactly the same as replicaset you just need to change the kind keyword to "Deployment" instead of "ReplicaSet".
+#  It creates three objects
+#     1. Deployment   - my-deployment-postgres
+#     2. Replication  - my-deployment-postgres-56578969475 (postfix with some random name in front of deployment name)
+#     3. 4 PODS  as the replicas are 4 (postfix with some random name in front of replica set name)
+#           a. my-deployment-postgres-56578969475-fgfgryd       
+#           b. my-deployment-postgres-56578969475-yuiryyt
+#           c. my-deployment-postgres-56578969475-jhjgjjk
+#           d. my-deployment-postgres-56578969475-klgtdde
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment-postgres
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: db-tier
+  template:
+    metadata:
+      name: postgres
+      labels:
+        tier: db-tier
+    spec:
+      containers:
+        - name: postgres
+          image: postgres
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          env:
+            - name: POSTGRES_USERNAME
+              value: admin
+            - name: POSTGRES_PASSWORD
+              value: mysecretpassword

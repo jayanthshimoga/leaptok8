@@ -1,0 +1,41 @@
+#  The Deployment yaml is exactly the same as replicaset you just need to change the kind keyword to "Deployment" instead of "ReplicaSet".
+#  It creates three objects
+#     1. Deployment   - my-deployment-nginx
+#     2. Replication  - my-deployment-nginx-45654564343 (postfix with some random name in front of deployment name)
+#     3. 4 PODS  as the replicas are 4 (postfix with some random name in front of replica set name)
+#           a. my-deployment-nginx-45654564343-efsfgsf       
+#           b. my-deployment-nginx-45654564343-fdfdggd
+#           c. my-deployment-nginx-45654564343-eretert
+#           d. my-deployment-nginx-45654564343-jkljljl
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment-nginx
+  labels:
+    app: my-app
+    tier: frontend
+spec:
+  replicas: 4
+  template:                       # Whole template are copied from Nginx POD
+    metadata: 
+      name: pioneer-samplepod
+      labels:
+        name: myapp
+        type: frontend            # SHOULD MATCH EACHOTHER
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports: 
+            - containerPort: 80
+  selector:                       # Here in selector it should match the labels
+    matchLabels:
+      type: frontend              # SHOULD MATCH EACHOTHER
+      
+  
