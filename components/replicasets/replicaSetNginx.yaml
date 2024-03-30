@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: my-replicaset
+  labels:
+    app: my-app
+    tier: frontend
+spec:
+  replicas: 4
+  template:                       # Whole template are copied from Nginx POD
+    metadata: 
+      name: pioneer-samplepod
+      labels:
+        name: myapp
+        type: frontend            # SHOULD MATCH EACHOTHER
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports: 
+            - containerPort: 80
+  selector:                       # Here in selector it should match the labels
+    matchLabels:
+      type: frontend              # SHOULD MATCH EACHOTHER
+      
+  
